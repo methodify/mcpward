@@ -1,0 +1,7 @@
+# The RSA keys under crates/mcpward-testing/keys/ are public, test-only keys.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Public test-only keys"
+paths = ['''crates/mcpward-testing/keys/TEST-ONLY-.*''']

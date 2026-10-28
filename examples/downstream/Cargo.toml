@@ -1,0 +1,25 @@
+[package]
+name = "example-downstream"
+description = "mcpward example: On-Behalf-Of to a downstream REST API, Entra preset"
+version = "0.0.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+mcpward = { workspace = true, features = ["server", "exchange", "aws-lc-rs"] }
+rmcp = { workspace = true, features = ["server", "macros", "schemars"] }
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+tracing-subscriber.workspace = true
+
+[dev-dependencies]
+mcpward-testing.workspace = true
+axum = { workspace = true, features = ["http1", "tokio", "json", "query"] }
+tokio = { workspace = true, features = ["full"] }
+
+[lints]
+workspace = true

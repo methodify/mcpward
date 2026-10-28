@@ -1,0 +1,40 @@
+name: Audit
+
+on:
+  schedule:
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
+        with:
+          toolchain: stable
+      - run: cargo install cargo-audit --locked
+      - run: cargo audit
+
+  newest-rmcp:
+    # Builds against the newest rmcp release with the ~3.8 requirement relaxed, so a new
+    # rmcp minor is noticed before users hit it.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8 # master
+        with:
+          toolchain: stable
+      - name: Relax the rmcp requirement
+        run: sed -i 's/^rmcp = { version = "~3.8"/rmcp = { version = ">=3.8"/' Cargo.toml
+      - run: cargo update -p rmcp
+      - run: cargo test --workspace --all-features
+      - name: Open an issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh issue create --title "Build fails against the newest rmcp" --body "See ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

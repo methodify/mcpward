@@ -1,0 +1,11 @@
+# Patterns that must never appear in a tracked file or a commit message (extended regex,
+# matched case-insensitively). Generic on purpose: this file is public. Put names that must
+# never appear (organizations, products, people, internal domains) in an untracked
+# denylist.local.txt, one pattern per line; scripts/denylist.sh reads it too.
+#
+# Home directories and user profiles. Character classes keep this file from matching itself.
+/hom[e]/
+/Users/
+C:\\Users
+# Tenant domains
+\.onmicro[s]oft\.com

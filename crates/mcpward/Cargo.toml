@@ -1,0 +1,61 @@
+[package]
+name = "mcpward"
+description = "Auth-first toolkit for remote MCP servers: an OAuth 2.1 resource server around rmcp"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme = "../../README.md"
+keywords = ["mcp", "oauth", "jwt", "entra", "rmcp"]
+categories = ["authentication", "web-programming::http-server"]
+
+[features]
+default = ["server", "exchange", "aws-lc-rs"]
+## The axum + rmcp server: builder, layers, policies, extractors.
+server = ["dep:axum", "dep:rmcp", "dep:tower", "dep:tower-http", "dep:tokio-util", "dep:http-body-util", "dep:bytes", "dep:ulid", "dep:schemars"]
+## Downstream token exchange (Entra On-Behalf-Of), caching, and the authorized HTTP client.
+exchange = ["server", "dep:moka"]
+## jsonwebtoken on aws-lc-rs.
+aws-lc-rs = ["jsonwebtoken/aws_lc_rs"]
+## jsonwebtoken on RustCrypto.
+rust-crypto = ["jsonwebtoken/rust_crypto"]
+## Auth::dev: a development mode that authenticates every request as one identity. Never enable in production.
+dev-auth = ["server"]
+
+[dependencies]
+jsonwebtoken.workspace = true
+reqwest = { workspace = true, features = ["rustls", "json", "form", "query", "http2"] }
+secrecy.workspace = true
+arc-swap.workspace = true
+base64.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+tokio = { workspace = true, features = ["sync", "time", "rt", "macros", "net", "signal", "fs"] }
+url.workspace = true
+http.workspace = true
+futures-util.workspace = true
+
+axum = { workspace = true, optional = true, features = ["http1", "http2", "tokio", "json", "query"] }
+rmcp = { workspace = true, optional = true, features = ["server", "macros", "transport-streamable-http-server", "schemars"] }
+tower = { workspace = true, optional = true, features = ["util"] }
+tower-http = { workspace = true, optional = true, features = ["request-id", "timeout", "limit", "util"] }
+tokio-util = { workspace = true, optional = true }
+http-body-util = { workspace = true, optional = true }
+bytes = { workspace = true, optional = true }
+ulid = { workspace = true, optional = true }
+schemars = { workspace = true, optional = true }
+moka = { workspace = true, optional = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["full", "test-util"] }
+axum = { workspace = true, features = ["http1", "tokio", "json"] }
+
+[package.metadata.docs.rs]
+all-features = true
+
+[lints]
+workspace = true

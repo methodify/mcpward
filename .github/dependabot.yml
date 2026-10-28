@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      # rmcp minors are adopted deliberately (see docs/design.md).
+      - dependency-name: rmcp
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
