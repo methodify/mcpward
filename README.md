@@ -145,7 +145,7 @@ mcpward_testing::conformance! {
 | `server` | yes | Builder, auth and policy layers, extractors, serving |
 | `exchange` | yes | `EntraObo`, `CachedExchanger`, `Downstream`, `Caller::client` |
 | `aws-lc-rs` | yes | jsonwebtoken on aws-lc-rs |
-| `rust-crypto` | no | jsonwebtoken on RustCrypto |
+| `rust-crypto` | no | jsonwebtoken on RustCrypto. Prefer the default `aws-lc-rs`; see the advisory notes in `deny.toml`. |
 | `dev-auth` | **no** | `Auth::dev`, a local mode with no token checks |
 
 `dev-auth` is off by default, so a production build has no bypass compiled in. Turn it on

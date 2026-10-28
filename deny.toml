@@ -5,6 +5,15 @@ all-features = true
 [advisories]
 version = 2
 yanked = "deny"
+# Both come from jsonwebtoken's optional `rust-crypto` backend (RustCrypto rsa
+# and elliptic-curve). They are timing side channels in operations on secret
+# values. mcpward only verifies signatures with public keys; signing happens
+# only in mcpward-testing, with test keys. The default backend, `aws-lc-rs`,
+# doesn't use these crates. Revisit when jsonwebtoken moves to fixed versions.
+ignore = [
+  { id = "RUSTSEC-2023-0071", reason = "rsa Marvin attack: private-key operations only; mcpward verifies with public keys" },
+  { id = "RUSTSEC-2026-0387", reason = "crypto-bigint 0.5 timing on secret integers: public-key verification only; no fixed 0.5 release" },
+]
 
 [licenses]
 version = 2
