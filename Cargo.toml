@@ -36,7 +36,7 @@ http = "1"
 http-body-util = "0.1"
 bytes = "1"
 futures-util = { version = "0.3", default-features = false, features = ["std"] }
-ulid = "1"
+ulid = "3"
 schemars = "1"
 
 [workspace.lints.rust]
