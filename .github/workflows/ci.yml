@@ -12,7 +12,7 @@ env:
   CARGO_TERM_COLOR: always
   RUSTFLAGS: -D warnings
 
-# Pin each action to a full commit SHA before the first public release (tags can move).
+# Each action is pinned to a full commit SHA (tags can move); the comment names the tag.
 jobs:
   checks:
     runs-on: ubuntu-latest
