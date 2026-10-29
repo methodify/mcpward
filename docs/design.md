@@ -30,6 +30,12 @@ mcpward depends on `rmcp = "~3.8"`. It relies on where rmcp puts the request's
 deliberately: bump the requirement, run the conformance suite, and note it in the changelog.
 rmcp's macros emit `rmcp::` paths, so consumers depend on rmcp directly.
 
+`server::schema` rewrites tool schemas for portability after rmcp builds them. rmcp's
+`#[tool]` macros generate schemas with fixed schemars settings and no hook, so the rewrite runs
+on the `ToolRouter` (whose routes and `Tool` definitions are public) rather than in schemars or
+in the policy layer. That keeps it opt-in, runs it once at startup, and leaves `tools/list`
+bodies untouched by mcpward.
+
 ## Request pipeline
 
 For `POST {mcp_path}`, outermost first:

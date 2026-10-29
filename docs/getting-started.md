@@ -7,7 +7,7 @@ already know how to write rmcp `#[tool]` handlers.
 
 ```toml
 [dependencies]
-mcpward = "0.1"
+mcpward = "0.2"
 rmcp = { version = "~3.8", features = ["server", "macros", "schemars"] }
 schemars = "1"
 serde = { version = "1", features = ["derive"] }
@@ -15,7 +15,7 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 tracing-subscriber = { version = "0.3", features = ["json"] }
 
 [dev-dependencies]
-mcpward-testing = "0.1"
+mcpward-testing = "0.2"
 
 [features]
 dev = ["mcpward/dev-auth"]

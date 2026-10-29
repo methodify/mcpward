@@ -57,14 +57,14 @@ mcpward owns the server's half of that exchange:
 
 ```toml
 [dependencies]
-mcpward = "0.1"
+mcpward = "0.2"
 rmcp = { version = "~3.8", features = ["server", "macros", "schemars"] }
 schemars = "1"
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 
 [dev-dependencies]
-mcpward-testing = "0.1"
+mcpward-testing = "0.2"
 ```
 
 Depend on `rmcp` directly with a compatible requirement (`"~3.8"`): rmcp's macros emit
@@ -138,6 +138,34 @@ mcpward_testing::conformance! {
 }
 ```
 
+## Portable tool schemas
+
+schemars emits JSON Schema that some MCP clients reject or misread: `true` for a
+`serde_json::Value` field and `type: ["string", "null"]` for an `Option<String>`. The MCP
+Inspector flags both (`npx @modelcontextprotocol/inspector --cli <url> --method tools/list --strict`).
+`mcpward::server::schema` rewrites a tool router's schemas into a portable spelling. It's opt-in:
+
+```rust
+use mcpward::server::schema::portable;
+
+impl Notes {
+    fn new() -> Self {
+        Self { tool_router: portable(Self::tool_router()) }
+    }
+}
+
+#[tool_handler(router = self.tool_router)] // list tools from the rewritten router
+impl ServerHandler for Notes { /* ... */ }
+```
+
+An optional property loses `null` from its type (leave the property out instead; serde still
+accepts an explicit `null`), a required nullable becomes an `anyOf` with a `null` branch, and an
+untyped value becomes an `anyOf` with one branch per JSON type. Integer formats that aren't JSON
+Schema formats (`uint32`, `uint`) are dropped. `Portable::new()` takes options:
+`.output_schemas(true)` rewrites output schemas too, and `.any_value(AnyValue::Object)` advertises
+untyped values as free-form objects. For a field that is always a JSON object, prefer typing it as
+`serde_json::Map<String, Value>`. Details are in the `server::schema` module documentation.
+
 ## Features
 
 | Feature | Default | Enables |
@@ -152,7 +180,7 @@ mcpward_testing::conformance! {
 through your own dev-only feature: `[features] dev = ["mcpward/dev-auth"]`.
 
 For the validator alone, without rmcp or axum, use
-`mcpward = { version = "0.1", default-features = false, features = ["aws-lc-rs"] }`.
+`mcpward = { version = "0.2", default-features = false, features = ["aws-lc-rs"] }`.
 
 ## Providers
 

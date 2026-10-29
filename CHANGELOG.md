@@ -4,7 +4,22 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/) (breaking changes bump the minor version while 0.x).
 
-## Unreleased
+## 0.2.0 (2026-10-29)
+
+### Added
+
+- `mcpward::server::schema`: opt-in portable tool schemas. `portable(router)` (or
+  `Portable::new().router(router)`) rewrites the input schemas of an rmcp `ToolRouter`,
+  including those the `#[tool]` macros generate, so they pass the MCP Inspector's schema
+  portability checks: bare `true`/`false` and untyped schemas get an explicit spelling, an
+  optional property's `type: [T, "null"]` becomes `type: T`, a required nullable becomes
+  `anyOf: [{type: T}, {type: "null"}]`, and an optional property drops a `null` branch from
+  `anyOf`/`oneOf`. `Portable::output_schemas(true)` covers output schemas too, and
+  `AnyValue::Object` advertises free-form values as JSON objects. The integer formats
+  schemars writes for Rust integer types (`uint32`, `uint`, `int8`, and the rest), which aren't
+  JSON Schema formats, are removed. `Portable` also implements schemars' `Transform`.
+
+## 0.1.0 (2026-10-28)
 
 ### Added
 

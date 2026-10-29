@@ -15,6 +15,7 @@ mod failure;
 mod info;
 mod obs;
 mod policy;
+pub mod schema;
 
 use std::{
     collections::BTreeSet,

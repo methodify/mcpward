@@ -3,7 +3,7 @@ resolver = "3"
 members = ["crates/mcpward", "crates/mcpward-testing", "examples/minimal", "examples/downstream"]
 
 [workspace.package]
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 rust-version = "1.88"
 license = "MIT OR Apache-2.0"
@@ -11,8 +11,8 @@ repository = "https://github.com/methodify/mcpward"
 homepage = "https://github.com/methodify/mcpward"
 
 [workspace.dependencies]
-mcpward = { path = "crates/mcpward", version = "0.1.0", default-features = false }
-mcpward-testing = { path = "crates/mcpward-testing", version = "0.1.0" }
+mcpward = { path = "crates/mcpward", version = "0.2.0", default-features = false }
+mcpward-testing = { path = "crates/mcpward-testing", version = "0.2.0" }
 rmcp = { version = "~3.8", default-features = false }
 axum = { version = "0.8", default-features = false }
 tower = "0.5"
